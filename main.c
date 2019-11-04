@@ -86,7 +86,7 @@ void push(int *map, int point)
     }
 }
 
-// 目的と比べるやつ
+// 目的と比べるやつ goalとmapの各要素が一致していれば1
 int check(int *map, int goal)
 {
     int clear = 1;
@@ -98,6 +98,7 @@ int check(int *map, int goal)
     return clear;
 }
 
+// 盤面の表示
 void printMap(int *map)
 {
     for (int i = 0; i < 3; i++)
@@ -111,11 +112,11 @@ void printMap(int *map)
 }
 
 // 全通り試して最適解をsolve[]に入れる
-int *calc(int *map, int goal, int *solve)
+void calc(int *map, int goal, int *solve)
 {
     int m[9];     // 足す数が入ってるやつ
     int after[9]; // コピー用配列
-    int currentCount = 27;
+    int currentCount;
     int minCount = 27;
 
     for (m[0] = 0; m[0] < 4; m[0] += 1)
