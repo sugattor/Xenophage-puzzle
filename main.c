@@ -110,8 +110,8 @@ void printMap(int *map)
     }
 }
 
-// 全通り試すやつ
-int *calc(int *map, int goal,int *solve)
+// 全通り試して最適解をsolve[]に入れる
+int *calc(int *map, int goal, int *solve)
 {
     int m[9];     // 足す数が入ってるやつ
     int after[9]; // コピー用配列
@@ -156,9 +156,8 @@ int *calc(int *map, int goal,int *solve)
                                             if (currentCount < minCount)
                                             { // 押す回数がより少ない場合
                                                 minCount = currentCount;
-                                                memcpy(solve, after, sizeof(after));
-                                                printMap(m);
-                                                printf("\n");
+                                                memcpy(solve, m, sizeof(m));
+                                                // printMap(m);printf("\n");
                                             }
                                         }
                                     }
@@ -170,20 +169,17 @@ int *calc(int *map, int goal,int *solve)
             }
         }
     }
-    return solve;
 }
 
 int main(void)
 {
-    int test[9] = {1, 1, 0, 2, 2, 2, 1, 3, 0};
     int solve[9]; // 解が入る配列
+    int test[9] = {1, 1, 0, 2, 2, 2, 1, 3, 0};
     int goal = 2;
     printf("揃える記号は%d、\n",goal);
     printMap(test);
 
     printf("の盤面の場合、押すべき回数を計算します..\n\n");
     calc(test, goal, solve);
-    printf("一番下が最適解です（たぶん）\n");
-    // printMap(calc(test, goal, solve));
-    // printf("%d\n\n", check(test, goal));
+    printMap(solve);
 }
