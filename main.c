@@ -1,7 +1,52 @@
 #include <stdio.h>
-#include <memory.h>
+#include <stdlib.h>
+#include <string.h>
 
-// 米=0　÷=1　V=2　A=3
+// 記号を0～3に変換するやつ
+int conv(char c)
+{
+    if (c == '*')
+        return 0;
+    if (c == '=')
+        return 1;
+    if (c == 'V')
+        return 2;
+    if (c == 'A')
+        return 3;
+    return 0;
+}
+
+// ファイル(puzzle.txt)から盤面を読み込むやつ
+int readText(int *symbol)
+{
+    char c;
+    int i; // symbol[i]
+    FILE *file;
+
+    if ((file = fopen("puzzle.txt", "r")) == NULL)
+    {
+        printf("file open error\n");
+        return -1;
+    }
+
+    i = 0;
+    while ((c = fgetc(file)) != EOF || i < 9)
+    {
+        switch (c)
+        {
+        case '*':
+        case '=':
+        case 'V':
+        case 'A':
+            symbol[i] = conv(c);
+            i++;
+            break;
+        }
+    }
+    fclose(file);
+
+    return 0;
+}
 
 // 押されたら反映するやつ
 void push(int *map, int point)
@@ -175,12 +220,23 @@ void calc(int *map, int goal, int *solve)
 int main(void)
 {
     int solve[9]; // 解が入る配列
-    int test[9] = {1, 1, 0, 2, 2, 2, 1, 3, 0};
-    int goal = 2;
-    printf("揃える記号は%d、\n",goal);
-    printMap(test);
+    int test[9];
+    int goal = 0;
 
-    printf("の盤面の場合、押すべき回数を計算します..\n\n");
+    // 目標値を設定させる
+    printf("揃える記号を入力(*,=,V,A)\n");
+    fflush(stdout);
+    goal = conv(getchar());
+
+    // テキストを読み込む
+    readText(test);
+
+    // 盤面表示
+    // printMap(test);
+
+    printf("\n押す回数は以下の通りです\n\n");
     calc(test, goal, solve);
     printMap(solve);
+
+    return 0;
 }
