@@ -19,18 +19,18 @@ int conv(char c)
 // ファイル(puzzle.txt)から盤面を読み込むやつ
 int readText(int *symbol)
 {
-    char c;
+    int c;
     int i; // symbol[i]
     FILE *file;
 
     if ((file = fopen("puzzle.txt", "r")) == NULL)
     {
-        printf("file open error\n");
+        printf("ファイルが開けません\n");
         return -1;
     }
 
     i = 0;
-    while ((c = fgetc(file)) != EOF || i < 9)
+    while ((c = fgetc(file)) != EOF && i < 9)
     {
         switch (c)
         {
@@ -44,6 +44,7 @@ int readText(int *symbol)
         }
     }
     fclose(file);
+    if(i < 9) printf("盤面ファイルがおかしいかもしれません\n");
 
     return 0;
 }
@@ -220,7 +221,7 @@ void calc(int *map, int goal, int *solve)
 int main(void)
 {
     int solve[9]; // 解が入る配列
-    int test[9];
+    int test[9] = {0};
     int goal = 0;
 
     // 目標値を設定させる
